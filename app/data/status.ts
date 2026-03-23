@@ -20,7 +20,7 @@ export const STATUS_GROUPS = {
   },
   planned: {
     title: "Planejado",
-    description: "Funcionalidades que estamos planejando trabalhar",
+    description: "Funcionalidades que estamos planejando",
     icon: ListCheck,
     color: "border-blue-500",
     bgColor:

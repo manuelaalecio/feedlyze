@@ -83,9 +83,9 @@ export default function FeedbackList({
           }),
         );
 
-        toast.success(data.voted ? "Vote added!" : "Vote removed");
+        toast.success(data.voted ? "Voto adicionado!" : "Voto removido");
       } catch (error) {
-        toast.error("Failed to submit vote. Please try again");
+        toast.error("Erro ao enviar voto. Por favor, tente novamente");
       }
     });
   };
