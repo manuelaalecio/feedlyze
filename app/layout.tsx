@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { syncCurrentUser } from "@/lib/sync-user";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -19,11 +20,13 @@ export const metadata: Metadata = {
     "Plataforma para usuários reportarem ideias e sugestões em funcionalidades",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await syncCurrentUser();
+
   return (
     <ClerkProvider localization={ptBR}>
       <html lang="pt-BR" suppressHydrationWarning>
