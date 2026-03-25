@@ -29,28 +29,32 @@ export default function FeedbackList({
   const [posts, setPosts] = useState<PostWithAuthorAndVotes[]>(initialPosts);
   const [isPending, startTransition] = useTransition();
 
+  const makeOptimisticVote = (postId: number, dbUserId: number) => ({
+    id: -Date.now(),
+    postId,
+    userId: dbUserId,
+  });
+
   const [optimisticPosts, toggleOptimisticVote] = useOptimistic(
     posts,
     (currentPosts, postId: number) =>
       currentPosts.map((post) => {
         if (post.id !== postId) return post;
 
+        if (userId == null) return post;
         const alreadyVoted = post.votes.some((v) => v.userId === userId);
         return {
           ...post,
           votes: alreadyVoted
             ? post.votes.filter((v) => v.userId !== userId)
-            : [...post.votes, { userId }],
-          _count: {
-            votes: alreadyVoted ? post.votes.length - 1 : post.votes.length + 1,
-          },
+            : [...post.votes, makeOptimisticVote(postId, userId)],
         };
       }),
   );
 
   const handleVote = async (postId: number) => {
     if (!userId) {
-      toast.error("Please sign in to vote on feedback");
+      toast.error("Por favor, faça login para votar");
       return;
     }
 
@@ -75,11 +79,8 @@ export default function FeedbackList({
             return {
               ...post,
               votes: data.voted
-                ? [...post.votes, { userId }]
+                ? [...post.votes, makeOptimisticVote(postId, userId)]
                 : post.votes.filter((v) => v.userId !== userId),
-              _count: {
-                votes: data.voted ? voteCount + 1 : voteCount - 1,
-              },
             };
           }),
         );

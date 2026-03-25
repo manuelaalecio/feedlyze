@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Show, SignInButton } from "@clerk/nextjs";
 
 export default function HomePage() {
   return (
@@ -21,15 +22,30 @@ export default function HomePage() {
         subtitle="No Feedlyze, suas ideias ganham vida. Sugira funcionalidades, vote no que é mais importante e acompanhe nosso roteiro público."
       >
         <div className="flex gap-4 justify-center pt-4">
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-blue-600 hover:bg-gray-100"
-          >
-            <Link href="/feedback/new">
-              Envie seu feedback <ArrowRight className="h-4 w-4 ml-2" />
-            </Link>
-          </Button>
+          <>
+            <Show when="signed-in">
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-blue-600 hover:bg-gray-100"
+              >
+                <Link href="/feedback/new">
+                  Envie seu feedback <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+            </Show>
+
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <Button
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                >
+                  Envie seu feedback <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </SignInButton>
+            </Show>
+          </>
           <Button
             asChild
             size="lg"

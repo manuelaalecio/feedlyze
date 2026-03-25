@@ -15,6 +15,7 @@ import { getCategoryDesign } from "../data/category";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import FeedbackList from "@/components/feedback-list";
+import { Show, SignInButton } from "@clerk/nextjs";
 
 export default async function FeedbackPage() {
   const { userId } = await auth();
@@ -47,15 +48,29 @@ export default async function FeedbackPage() {
           subtitle="Explore, vote e contribua com os recursos que são mais importantes para você. Sua voz molda o futuro do nosso produto."
         >
           <div className="flex gap-4 justify-center pt-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100"
-            >
-              <Link href="/feedback/new">
-                <Plus className="h-4 w-4 mr-2" /> Novo feedback
-              </Link>
-            </Button>
+            <>
+              <Show when="signed-in">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                >
+                  <Link href="/feedback/new">
+                    <Plus className="h-4 w-4 mr-2" /> Novo feedback
+                  </Link>
+                </Button>
+              </Show>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <Button
+                    size="lg"
+                    className="bg-white text-blue-600 hover:bg-gray-100"
+                  >
+                    <Plus className="h-4 w-4 mr-2" /> Novo feedback
+                  </Button>
+                </SignInButton>
+              </Show>
+            </>
             <Button
               asChild
               size="lg"
