@@ -105,8 +105,8 @@ Clerk commonly requires environment variables in Next.js apps even if you don’
 ### 1) Clone the repository
 
 ```bash
-git clone <REPO_URL>
-cd feedback-fusion
+git clone git@github.com:manuelaalecio/feedlyze.git
+cd feedlyze
 ```
 
 ### 2) Install dependencies
