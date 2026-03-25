@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: number }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { userId } = await auth();
@@ -22,22 +22,23 @@ export async function PATCH(
 
     if (!user || user.role !== "admin") {
       return NextResponse.json(
-        { error: "Admin access required" },
+        {
+          error: "Admin access required",
+        },
         { status: 403 },
       );
     }
 
     const { status } = await request.json();
     const { id: postId } = await params;
+    const numericPostId = Number(postId);
 
     if (!STATUS_ORDER.includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
 
     const updatedPost = await prisma.post.update({
-      where: {
-        id: postId,
-      },
+      where: { id: numericPostId },
       data: {
         status,
       },
@@ -46,12 +47,13 @@ export async function PATCH(
         votes: true,
       },
     });
-
     return NextResponse.json(updatedPost);
   } catch (error) {
-    console.error("Error updating post status:", error);
+    console.error("Error updating post status: ", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      {
+        error: "Internal server error",
+      },
       { status: 500 },
     );
   }

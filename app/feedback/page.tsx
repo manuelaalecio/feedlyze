@@ -18,6 +18,12 @@ import FeedbackList from "@/components/feedback-list";
 
 export default async function FeedbackPage() {
   const { userId } = await auth();
+  const dbUser = userId
+    ? await prisma.user.findUnique({
+        where: { clerkUserId: userId },
+        select: { id: true },
+      })
+    : null;
 
   const posts = await prisma.post.findMany({
     include: {
@@ -113,7 +119,7 @@ export default async function FeedbackPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <FeedbackList initialPosts={posts} userId={userId} />
+            <FeedbackList initialPosts={posts} userId={dbUser?.id ?? null} />
           </div>
         </div>
       </div>

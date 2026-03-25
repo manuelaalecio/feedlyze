@@ -1,12 +1,40 @@
 "use client";
 
-import { Map, MessageSquare, Sparkle } from "lucide-react";
+import { useEffect } from "react";
+import { Map, MessageSquare, Shield, Sparkle } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
-import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import {
+  Show,
+  SignInButton,
+  UserButton,
+  useAuth,
+  useClerk,
+} from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function Navbar() {
+  const { isSignedIn } = useAuth();
+  const clerk = useClerk();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const shouldOpen = searchParams.get("sign-in") === "1";
+    if (!shouldOpen || isSignedIn) return;
+
+    clerk.openSignIn();
+
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete("sign-in");
+    const nextUrl = nextParams.toString()
+      ? `${pathname}?${nextParams.toString()}`
+      : pathname;
+    router.replace(nextUrl);
+  }, [clerk, isSignedIn, pathname, router, searchParams]);
+
   return (
     <nav className="border-b bg-background">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -33,6 +61,15 @@ export function Navbar() {
             <MessageSquare className="h-4 w-4" />
             Feedback
           </Link>
+          <Show when="signed-in">
+            <Link
+              href="/admin"
+              className="text-sm hover:text-primary flex items-center gap-1"
+            >
+              <Shield className="h-4 w-4" />
+              Admin
+            </Link>
+          </Show>
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />

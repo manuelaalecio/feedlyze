@@ -28,14 +28,13 @@ export default async function RootLayout({
   await syncCurrentUser();
 
   return (
-    <ClerkProvider localization={ptBR}>
-      <html lang="pt-BR" suppressHydrationWarning>
-        <body
-          className={cn(
-            "font-sans antialiased min-h-screen flex flex-col",
-            inter.variable,
-          )}
-        >
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body
+        className={cn(
+          "font-sans antialiased min-h-screen flex flex-col",
+          inter.variable,
+        )}
+      ><ClerkProvider localization={ptBR}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -52,8 +51,7 @@ export default async function RootLayout({
             <Footer />
             <Toaster richColors />
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider></body>
+    </html>
   );
 }

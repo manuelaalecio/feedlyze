@@ -12,12 +12,11 @@ import { BarChart3, CheckCheck, Clock, Target } from "lucide-react";
 import { STATUS_GROUPS, STATUS_ORDER } from "../data/status";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import type { PostStatusType, PostWithAuthorAndVotes } from "@/types/post";
 
-function getStatusPercentage(posts: any, status: string) {
+function getStatusPercentage(posts: PostWithAuthorAndVotes[], status: PostStatusType) {
   const total = posts.length;
-  const count = posts.filter(
-    (post: { status: string }) => post.status === status,
-  ).length;
+  const count = posts.filter((post) => post.status === status).length;
 
   return total > 0 ? Math.round((count / total) * 100) : 0;
 }

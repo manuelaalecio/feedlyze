@@ -17,15 +17,16 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { STATUS_GROUPS } from "@/app/data/status";
 import { getCategoryDesign } from "@/app/data/category";
+import type { PostWithAuthorAndVotes } from "@/types/post";
 
 export default function FeedbackList({
   initialPosts,
   userId,
 }: {
-  initialPosts: any[];
-  userId: string | null;
+  initialPosts: PostWithAuthorAndVotes[];
+  userId: number | null;
 }) {
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState<PostWithAuthorAndVotes[]>(initialPosts);
   const [isPending, startTransition] = useTransition();
 
   const [optimisticPosts, toggleOptimisticVote] = useOptimistic(
@@ -34,11 +35,11 @@ export default function FeedbackList({
       currentPosts.map((post) => {
         if (post.id !== postId) return post;
 
-        const alreadyVoted = post.votes.some((v: any) => v.userId === userId);
+        const alreadyVoted = post.votes.some((v) => v.userId === userId);
         return {
           ...post,
           votes: alreadyVoted
-            ? post.votes.filter((v: any) => v.userId !== userId)
+            ? post.votes.filter((v) => v.userId !== userId)
             : [...post.votes, { userId }],
           _count: {
             votes: alreadyVoted ? post.votes.length - 1 : post.votes.length + 1,
@@ -75,7 +76,7 @@ export default function FeedbackList({
               ...post,
               votes: data.voted
                 ? [...post.votes, { userId }]
-                : post.votes.filter((v: any) => v.userId !== userId),
+                : post.votes.filter((v) => v.userId !== userId),
               _count: {
                 votes: data.voted ? voteCount + 1 : voteCount - 1,
               },
@@ -158,7 +159,7 @@ export default function FeedbackList({
               >
                 <ThumbsUp
                   className={`h-4 w-4 ${
-                    post.votes.some((v: any) => v.userId === userId)
+                    post.votes.some((v) => v.userId === userId)
                       ? "fill-current"
                       : ""
                   }`}
