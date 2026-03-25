@@ -41,7 +41,7 @@ export function Navbar() {
         <div className="flex items-center gap-6">
           <Link href="/">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-linear-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-xl bg-linear-to-r from-cyan-500 via-sky-500 to-blue-600 flex items-center justify-center">
                 <Sparkle className="h-4 w-4 text-white" />
               </div>
               <span className="text-lg font-bold">Feedlyze</span>

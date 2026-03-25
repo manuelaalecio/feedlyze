@@ -34,10 +34,11 @@ export default async function RootLayout({
           "font-sans antialiased min-h-screen flex flex-col",
           inter.variable,
         )}
-      ><ClerkProvider localization={ptBR}>
+      >
+        <ClerkProvider localization={ptBR}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
@@ -51,7 +52,8 @@ export default async function RootLayout({
             <Footer />
             <Toaster richColors />
           </ThemeProvider>
-        </ClerkProvider></body>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
